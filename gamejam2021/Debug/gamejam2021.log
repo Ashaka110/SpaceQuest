@@ -1,0 +1,3 @@
+﻿  testscene.cpp
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(10): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  gamejam2021.vcxproj -> C:\Users\aahie\source\repos\gamejam2021\Debug\gamejam2021.exe
