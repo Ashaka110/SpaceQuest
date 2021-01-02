@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -132,6 +132,9 @@
     <ClCompile Include="cubeGrid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="PolyGrid.cpp" />
+    <ClCompile Include="PolyMissile.cpp" />
+    <ClCompile Include="PolyShip.cpp" />
     <ClCompile Include="testscene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +142,9 @@
     <ClInclude Include="cube.h" />
     <ClInclude Include="cubeGrid.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="PolyGrid.h" />
+    <ClInclude Include="PolyMissile.h" />
+    <ClInclude Include="PolyShip.h" />
     <ClInclude Include="testscene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -21,6 +21,13 @@ void Camera::render(sf::RenderWindow &window){
 
 void Camera::update(float delta){
     
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    {
+        position = Point(0,0,0);
+        roty = 0;
+        recalculate();
+    }
+
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         position = Point::add( position, Point::scale(right, -delta));
@@ -36,6 +43,14 @@ void Camera::update(float delta){
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
         position = Point::add( position, Point::scale(forward, delta));
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    {
+        position = Point::add( position, Point::scale(Point(0,1,0), delta));
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+    {
+        position = Point::add( position, Point::scale(Point(0,1,0), -delta));
     }
     
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A ))
@@ -59,6 +74,16 @@ void Camera::recalculate(){
 
 void Camera::drawLine(Point a, Point b){
 
+	drawLine(a, b, sf::Color(255,255,255));
+}
+
+void Camera::drawLine(Point a, Point b, sf::Color color)
+{
+	drawLine(a, b, color, color);
+}
+
+void Camera::drawLine(Point a, Point b, sf::Color colora, sf::Color colorb)
+{
     Point camSpaceA = worldToCamSpace(a);
     Point camSpaceB = worldToCamSpace(b);
 
@@ -68,6 +93,8 @@ void Camera::drawLine(Point a, Point b){
         pointToScreenSpace(camSpaceB),
     };
 
+	line[0].color = colora;
+	line[1].color = colorb; //sf::Color(0, 200, 0)
 
     if(camSpaceA.z > 0 && camSpaceB.z > 0){
         window->draw(line, 2, sf::Lines);
@@ -78,7 +105,7 @@ Point Camera::worldToCamSpace(Point p){
     Point l = Point::add(p, position);
     return Point(
             l.x * cosy - l.z * siny, 
-            l.y,
+            -l.y,
             l.z * cosy + l.x * siny);
 }
 

@@ -12,6 +12,8 @@ class Camera{
         void update(float delta);
 
         void drawLine(Point a, Point b);
+        void drawLine(Point a, Point b, sf::Color color);
+        void drawLine(Point a, Point b, sf::Color colora, sf::Color colorb);
         void drawCube(Point a);
 
     private:
