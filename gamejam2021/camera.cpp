@@ -13,6 +13,8 @@ Camera::Camera(sf::RenderWindow *window){
     recalculate();
 
     std::cout << "Camera\n";
+
+	font.loadFromFile("Retro Gaming.ttf");
 }
 
 void Camera::render(sf::RenderWindow &window){
@@ -21,6 +23,7 @@ void Camera::render(sf::RenderWindow &window){
 
 void Camera::update(float delta){
     
+	/*
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
         position = Point(0,0,0);
@@ -63,6 +66,7 @@ void Camera::update(float delta){
         roty -= delta;
         recalculate();
     }
+	*/
 }
 
 void Camera::recalculate(){
@@ -121,6 +125,12 @@ sf::Vertex Camera::pointToScreenSpace(Point p){
 void Camera::drawCube(Point a){
     Cube c(a);
     c.render(this);
+}
+
+void Camera::drawText(sf::Text text)
+{
+	text.setFont(font);
+	window->draw(text);
 }
 
 

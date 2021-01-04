@@ -9,9 +9,12 @@ class Point{
         float x, y, z;
         static Point add(Point a, Point b);
         static Point scale(Point a, float s);
+		static Point getCenter(Point a, Point b);
+        static float sqrDistance(Point a, Point b);
 
 		static void Translate(Point p[], int arraySize, Point translate);
 		static void RotateZ(Point p[], int arraySize, float angle);
+		static Point RotateAroundZ(Point p, Point center, float angle);
 
 };
 

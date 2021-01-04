@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "point.h"
 #include "testscene.h"
 #include "camera.h"
@@ -6,14 +7,17 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Space Quest");
     sf::Clock clock;
+
 
     TestScene t;
     Camera c(&window);
 
+
     while (window.isOpen())
     {
+
         
     	sf::Time elapsed = clock.restart();	
   		sf::Event event;
@@ -29,8 +33,7 @@ int main()
         
         window.clear();
         t.render(&c);
-		t.update(delta, &window);
-
+		t.update(delta, &window, &c);
 
         window.display();
     }

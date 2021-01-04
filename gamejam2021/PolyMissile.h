@@ -13,9 +13,9 @@ class PolyMissile
 
 		bool active;
 
+		Point position;
 	private:
 		Point direction;
-		Point position;
 
 		float lifetime;
 };

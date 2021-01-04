@@ -15,14 +15,17 @@ class Camera{
         void drawLine(Point a, Point b, sf::Color color);
         void drawLine(Point a, Point b, sf::Color colora, sf::Color colorb);
         void drawCube(Point a);
-
-    private:
+		void drawText(sf::Text text);
 
         Point position;
+    private:
+
         Point forward;
         Point right;
+		sf::Font font;
 
         sf::RenderWindow *window;
+		
 
         void recalculate();
 

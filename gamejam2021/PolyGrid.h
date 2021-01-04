@@ -9,6 +9,7 @@ class PolyGrid
 {
     public:
 		PolyGrid();
+		PolyGrid(float height, float scale);
 		void render(Camera *camera);
 		void update(float delta);
 
@@ -17,8 +18,12 @@ class PolyGrid
 
 		float noise[50][50];
 
+		float planeHeight;
 		float scroll;
 		int offset;
+		float hscale;
+
+		float timer;
         //int grid[gridSize][gridSize][gridSize];
 };
 
