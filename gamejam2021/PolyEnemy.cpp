@@ -2,19 +2,18 @@
 
 PolyEnemy::PolyEnemy()
 {
-	direction = Point(0, 0, -1);
 	angle = 0;
 	fireCooldown = 1;
+	color = sf::Color(200, 0, 0);
 }
 
 
 void PolyEnemy::render(Camera * camera)
 {
-	sf::Color shipColor(200, 0, 0);
 	if (deathTimer > 0) {
 		for (int i = 0; i < 12; i++)
 		{
-			camera->drawLine(shipdestroy[i*2], shipdestroy[(i * 2)+1], shipColor);
+			camera->drawLine(shipdestroy[i*2], shipdestroy[(i * 2)+1], color);
 		}
 	}
 
@@ -46,18 +45,18 @@ void PolyEnemy::render(Camera * camera)
 	Point::Translate(verts, 6, position);
 
 
-	camera->drawLine(verts[0], verts[1], shipColor);
-	camera->drawLine(verts[0], verts[2], shipColor);
-	camera->drawLine(verts[3], verts[1], shipColor);
-	camera->drawLine(verts[3], verts[2], shipColor);
-	camera->drawLine(verts[4], verts[1], shipColor);
-	camera->drawLine(verts[4], verts[2], shipColor);
-	camera->drawLine(verts[5], verts[1], shipColor);
-	camera->drawLine(verts[5], verts[2], shipColor);
-	camera->drawLine(verts[0], verts[4], shipColor);
-	camera->drawLine(verts[0], verts[5], shipColor);
-	camera->drawLine(verts[3], verts[4], shipColor);
-	camera->drawLine(verts[3], verts[5], shipColor);
+	camera->drawLine(verts[0], verts[1], color);
+	camera->drawLine(verts[0], verts[2], color);
+	camera->drawLine(verts[3], verts[1], color);
+	camera->drawLine(verts[3], verts[2], color);
+	camera->drawLine(verts[4], verts[1], color);
+	camera->drawLine(verts[4], verts[2], color);
+	camera->drawLine(verts[5], verts[1], color);
+	camera->drawLine(verts[5], verts[2], color);
+	camera->drawLine(verts[0], verts[4], color);
+	camera->drawLine(verts[0], verts[5], color);
+	camera->drawLine(verts[3], verts[4], color);
+	camera->drawLine(verts[3], verts[5], color);
 	}
 }
 
@@ -110,7 +109,7 @@ void PolyEnemy::update(float delta)
 bool PolyEnemy::tryHit(Point pos)
 {
 	if (alive) {
-		if (Point::sqrDistance(pos, position) < 2) {
+		if (Point::sqrDistance(pos, position) < .5) {
 			onDie();
 			return true;
 		}
@@ -140,6 +139,11 @@ bool PolyEnemy::canHit(Point pos)
 	return false;
 }
 
+int PolyEnemy::getPointValue()
+{
+	return 100;
+}
+
 
 
 void PolyEnemy::spawn(Point pos)
@@ -159,6 +163,7 @@ void PolyEnemy::onDie()
 	shipdestroy[2] = Point(0, 0, 0);	//0
 	shipdestroy[3] = Point(1, 0, .5);    //2
 	shipdestroy[4] = Point(0, 0, -1);    //3
+		void onDie();
 	shipdestroy[5] = Point(-1, 0, .5);    //1
 	shipdestroy[6] = Point(0, 0, -1);    //3
 	shipdestroy[7] = Point(1, 0, .5);    //2

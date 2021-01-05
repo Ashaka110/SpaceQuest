@@ -10,7 +10,6 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 800), "Space Quest");
     sf::Clock clock;
 
-
     TestScene t;
     Camera c(&window);
 

@@ -1,4 +1,9 @@
-﻿  Generating code
-  All 241 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  testscene.cpp
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(179): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(295): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating code
+  2 of 242 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   gamejam2021.vcxproj -> C:\Users\aahie\source\repos\gamejam2021\Release\SpaceQuest.exe

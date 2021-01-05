@@ -2,7 +2,8 @@
 
 PolyAsteroid::PolyAsteroid()
 {
-	direction = Point(0, 0, -1);
+	direction = Point(.1, .1, -3);
+	color = sf::Color(200,100,0);
 }
 
 #define NUM_VERTS 8
@@ -46,8 +47,9 @@ void PolyAsteroid::render(Camera * camera)
 		Point( .35, -1,-.35),
 	};
 
+	Point::RotateZ(verts, 32, angle);
 	Point::Translate(verts, 32, position);
-	sf::Color color = sf::Color(200, 0, 0);
+	sf::Color color = sf::Color(200, 100, 0);
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -65,16 +67,45 @@ void PolyAsteroid::render(Camera * camera)
 void PolyAsteroid::update(float delta)
 {
 	if (alive) {
-		//angle += delta;
-		position = Point::add(position, Point(0, 0, -3 * delta));
+		angle += delta * 2;
+
+		if (position.x < -3 || position.x > 3) {
+			direction.x *= -1;
+		}
+		if (position.y < -3 || position.y > 3) {
+			direction.y *= -1;
+		}
+		
+		position = Point::add(position,Point::scale( direction, delta));
+
 		if (position.z < -5) {
 			alive = false;
 		}
 	}
 }
 
-void PolyAsteroid::spawn(Point pos)
+bool PolyAsteroid::tryHit(Point pos)
 {
-	alive = true;
-	position = pos;
+	if (alive) {
+		if (Point::sqrDistance(pos, position) < 2) {
+			return true;
+		}
+	}
+	return false;
 }
+
+bool PolyAsteroid::canHit(Point pos)
+{
+	if (alive) {
+		if (Point::sqrDistance(pos, position) < 2) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int PolyAsteroid::getPointValue()
+{
+	return 0;
+}
+

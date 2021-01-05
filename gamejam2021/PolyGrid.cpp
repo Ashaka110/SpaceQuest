@@ -14,6 +14,7 @@ PolyGrid::PolyGrid()
 	planeHeight = -10;
 	hscale = 1;
 	timer = 0;
+	scrollSpeed = 1;
 }
 
 PolyGrid::PolyGrid(float height, float scale)
@@ -29,6 +30,7 @@ PolyGrid::PolyGrid(float height, float scale)
 	}
 	hscale = 1;
 	timer = 0;
+	scrollSpeed = 1;
 }
 
 void PolyGrid::render(Camera * camera)
@@ -68,7 +70,7 @@ void PolyGrid::render(Camera * camera)
 
 void PolyGrid::update(float delta)
 {
-	scroll += delta * 4;
+	scroll += delta * 4 * scrollSpeed;
 	  
 	if (scroll > 1) {
 		scroll -= 1;

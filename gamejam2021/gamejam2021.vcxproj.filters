@@ -54,6 +54,9 @@
     <ClCompile Include="PolyBoss.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PolyEnemyBouncer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -92,6 +95,9 @@
     <ClInclude Include="PolyBoss.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PolyEnemyBouncer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Retro Gaming.ttf">
@@ -100,6 +106,30 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Resources\SFX_20.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\JDB_City_of_Night.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\JDB_City_of_Night_Seq.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\JDB_Wicked.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\JDB_Wicked_Reprise.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\SFX_1.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\SFX_4.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\SFX_20.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\SFX_3.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #define TESTSCENE_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "cube.h"
 #include "camera.h"
 #include "point.h"
@@ -13,7 +14,7 @@
 #include "PolyAsteroid.h"
 
 #define PLAYER_MISSILES 5
-#define MAX_ENEMIES 20
+#define MAX_ENEMIES 32
 
 class TestScene{
     public:
@@ -29,6 +30,16 @@ class TestScene{
 		sf::Text livesText;
 		sf::Text gameOverText;
 
+		sf::SoundBuffer menuMusic;
+		sf::SoundBuffer gameMusic;
+		sf::SoundBuffer shootSound;
+		sf::SoundBuffer deathSound;
+		sf::SoundBuffer startupSound;
+		sf::SoundBuffer confirmSound;
+
+		sf::Sound music;
+		sf::Sound soundfx;
+
 		void updateMovement(float delta, sf::Window* window, Camera *c);
 		void updateShoot(float delta);
 		void updateEnemySpawn(float delta);
@@ -39,7 +50,7 @@ class TestScene{
 		PolyGrid grid;
 		PolyGrid gridtop;
 		PolyMissile playerMissiles[PLAYER_MISSILES];
-		PolyEnemy enemy[MAX_ENEMIES];
+		PolyEnemy* enemy[MAX_ENEMIES];
 		//PolyAsteroid asteroids[MAX_ENEMIES];
 
 		float gameTimer;
@@ -48,12 +59,18 @@ class TestScene{
 		bool mousedown;
 
 		float enemySpawnCooldown;
+		float enemySpawnRate;
 
 		bool inMenu;
 		int score;
 		int highscore;
 		int lives;
 
+		bool normalEnemySpawn;
+		bool bounceEnemySpawn;
+		bool asteroidSpawn;
+		bool barrierSpawn;
+		bool bossSpawn;
 };
 
 #endif // TESTSCENE_H

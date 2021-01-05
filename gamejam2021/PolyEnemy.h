@@ -6,25 +6,31 @@ class PolyEnemy
 {
     public:
 		PolyEnemy();
-		void render(Camera *camera);
-		void update(float delta);
+		virtual void render(Camera *camera);
+		virtual void update(float delta);
 
-		bool tryHit(Point pos);
-		bool canHit(Point pos);
+		virtual bool tryHit(Point pos);
+		virtual bool canHit(Point pos);
+
+		virtual int getPointValue();
+
 		void spawn(Point pos);
 
 		Point position;
 		Point direction;
 
 		bool alive;
-	private:
+	protected:
 		float angle;
-
-		float fireCooldown;
-
-		void onDie();
-		float deathTimer;
+		sf::Color color;
 		Point shipdestroy[24];
 		PolyMissile missles[5];
+		float fireCooldown;
+
+		float deathTimer;
+		void onDie();
+	private:
+
+
 };
 

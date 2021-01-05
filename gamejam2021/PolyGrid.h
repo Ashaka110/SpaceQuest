@@ -14,6 +14,7 @@ class PolyGrid
 		void update(float delta);
 
 		//Point position;
+		float scrollSpeed;
 	private:
 
 		float noise[50][50];

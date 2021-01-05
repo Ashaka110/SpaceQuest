@@ -113,7 +113,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;opengl32.lib;openal32.lib;freetype.lib;winmm.lib;gdi32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Dev\sfml\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -142,6 +142,7 @@
     <ClCompile Include="PolyBarrier.cpp" />
     <ClCompile Include="PolyBoss.cpp" />
     <ClCompile Include="PolyEnemy.cpp" />
+    <ClCompile Include="PolyEnemyBouncer.cpp" />
     <ClCompile Include="PolyGrid.cpp" />
     <ClCompile Include="PolyMissile.cpp" />
     <ClCompile Include="PolyShip.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="PolyBarrier.h" />
     <ClInclude Include="PolyBoss.h" />
     <ClInclude Include="PolyEnemy.h" />
+    <ClInclude Include="PolyEnemyBouncer.h" />
     <ClInclude Include="PolyGrid.h" />
     <ClInclude Include="PolyMissile.h" />
     <ClInclude Include="PolyShip.h" />
@@ -165,7 +167,15 @@
     <Font Include="Retro Gaming.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="Resources\JDB_City_of_Night.wav" />
+    <Media Include="Resources\JDB_City_of_Night_Seq.wav" />
+    <Media Include="Resources\JDB_Wicked.wav" />
+    <Media Include="Resources\JDB_Wicked_Reprise.wav" />
+    <Media Include="Resources\SFX_1.wav" />
     <Media Include="Resources\SFX_20.mp3" />
+    <Media Include="Resources\SFX_20.wav" />
+    <Media Include="Resources\SFX_3.wav" />
+    <Media Include="Resources\SFX_4.wav" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\openal32.dll" />
