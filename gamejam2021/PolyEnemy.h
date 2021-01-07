@@ -14,7 +14,7 @@ class PolyEnemy
 
 		virtual int getPointValue();
 
-		void spawn(Point pos);
+		virtual void spawn(Point pos);
 
 		Point position;
 		Point direction;
@@ -28,7 +28,7 @@ class PolyEnemy
 		float fireCooldown;
 
 		float deathTimer;
-		void onDie();
+		virtual void onDie();
 	private:
 
 

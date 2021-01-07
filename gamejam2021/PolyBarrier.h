@@ -2,15 +2,18 @@
 #include "point.h"
 #include "camera.h"
 #include "PolyEnemy.h"
-class PolyBarrier : PolyEnemy
+class PolyBarrier : public PolyEnemy
 {
     public:
-		PolyBarrier(Point position, float Angle);
+		PolyBarrier();
 		void render(Camera *camera);
 		void update(float delta);
 
-		Point position;
+		bool tryHit(Point pos);
+		bool canHit(Point pos);
+		int getPointValue();
+
+		virtual void spawn(Point pos);
 	private:
-		float angle;
 };
 

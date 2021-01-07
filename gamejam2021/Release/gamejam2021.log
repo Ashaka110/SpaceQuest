@@ -1,9 +1,19 @@
 ﻿  testscene.cpp
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(179): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(295): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(207): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(262): warning C4305: '*=': truncation from 'double' to 'float'
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(320): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(383): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(392): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(401): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(410): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(419): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Generating code
-  2 of 242 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+  3 of 267 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   gamejam2021.vcxproj -> C:\Users\aahie\source\repos\gamejam2021\Release\SpaceQuest.exe

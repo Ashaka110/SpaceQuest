@@ -59,7 +59,10 @@ void PolyMissile::update(float delta)
 	if (active) {
 		position = Point::add(position, Point::scale(direction, delta*20));
 		lifetime += delta;
-		if (lifetime > 1.5f) {
+		//if (lifetime > 1.5f) {
+			//active = false;
+		//}
+		if (position.z < -5 || position.z > 40) {
 			active = false;
 		}
 	}

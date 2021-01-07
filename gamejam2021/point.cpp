@@ -29,6 +29,14 @@ float Point::sqrDistance(Point a, Point b)
 	return diff.x*diff.x + diff.y*diff.y + diff.z*diff.z;
 }
 
+void Point::Scale(Point p[], int arraySize, float s)
+{
+	for (int i = 0; i < arraySize; i++)
+	{
+		p[i] = scale(p[i], s);
+	}
+}
+
 void Point::Translate(Point p[], int arraySize, Point translate)
 {
 	for (int i = 0; i < arraySize; i++)

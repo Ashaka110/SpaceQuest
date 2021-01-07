@@ -2,18 +2,27 @@
 #include "point.h"
 #include "camera.h"
 #include "PolyMissile.h"
-class PolyBoss
+#include "PolyEnemy.h"
+class PolyBoss : public PolyEnemy
 {
     public:
 		PolyBoss();
 		void render(Camera *camera);
 		void update(float delta);
 
-		Point position;
+		virtual int getPointValue();
 
+		bool tryHit(Point pos);
+		bool canHit(Point pos);
+
+		void spawn(Point pos);
+protected:
+		void onDie();
 	private:
-		bool active;
 
-		PolyMissile missles[40];
+		void fire(Point direction);
+		int health;
+		PolyMissile bmissles[40];
+		bool hit;
 };
 

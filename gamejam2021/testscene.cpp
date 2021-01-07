@@ -2,9 +2,10 @@
 #include "testscene.h"
 #include "PolyBarrier.h"
 #include "PolyEnemyBouncer.h"
+#include "PolyBoss.h"
 
 TestScene::TestScene(){
-    std::cout << "TestScene\n";
+    //std::cout << "TestScene\n";
 
 	fireCooldown = 0;
 	mousedown = false;
@@ -21,7 +22,7 @@ TestScene::TestScene(){
 	startText.setFillColor(sf::Color::White);
 	startText.setPosition(270, 380);
 
-	versionText.setString("Version: 1.2");
+	versionText.setString("Version: 2.0");
 	versionText.setCharacterSize(20); // in pixels, not points!
 	versionText.setFillColor(sf::Color::White);
 	versionText.setPosition(10, 760);
@@ -72,7 +73,7 @@ TestScene::TestScene(){
 	enemy[13] = new PolyEnemyBouncer();//&ast;
 	for (int i = 14; i < 20; i++)
 	{
-		enemy[i] = new PolyAsteroid();//&ast;
+		enemy[i] = new PolyBarrier();//&ast;
 	}
 	for (int i = 20; i < 30; i++)
 	{
@@ -80,9 +81,10 @@ TestScene::TestScene(){
 	}
 	for (int i = 30; i < 32; i++)
 	{
-		enemy[i] = new PolyAsteroid();//&ast;
+		enemy[i] = new PolyBoss();//&ast;
 	}
-	//enemy[10]->spawn(Point(0, 0, 30));
+
+	//enemy[30]->spawn(Point(0, 0, 30));
 
 	normalEnemySpawn = true;
 	enemySpawnRate = 2;
@@ -92,11 +94,6 @@ void TestScene::render(Camera *camera){
 
 	grid.render(camera);
 	gridtop.render(camera);
-
-	PolyBarrier barrier(Point(), 0);
-	//PolyAsteroid ast(Point(0, 0, 10), 0);
-	//barrier.render(camera);
-	//ast.render(camera);
 
 	for (int i = 0; i < MAX_ENEMIES; i++)
 	{
@@ -144,7 +141,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			score = 0;
 			lives = 5;
 			gameTimer = 0;
-			enemySpawnCooldown = 7;
+			enemySpawnCooldown = 8;
 			enemySpawnRate = 2;
 			music.stop();
 			soundfx.setBuffer(confirmSound);
@@ -182,7 +179,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 		updateShoot(delta);
 		updateEnemySpawn(delta);
 
-		if (gameTimer > 6)
+		if (gameTimer > 7)
 		{
 			if (music.getStatus() != sf::Sound::Status::Playing) {
 				music.setBuffer(gameMusic);
@@ -216,6 +213,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 		normalEnemySpawn = true;
 		bounceEnemySpawn = false;
 		asteroidSpawn = false;
+		barrierSpawn = false;
 
 
 		if (gameTimer > 30 && gameTimer < 38) {
@@ -240,15 +238,31 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			barrierSpawn = true;
 		}
 
-		if (gameTimer > 160) {
-			normalEnemySpawn = false;
+		
+		if (gameTimer > 155 && gameTimer < 160) {
+			enemy[30]->spawn(Point(0, 0, 30));
+			gameTimer = 165;
 		}
-		if (gameTimer > 165) {
+
+		if (gameTimer > 160 && gameTimer < 169) {
+			normalEnemySpawn = false;
+			if (enemy[30]->alive) {
+				gameTimer = 160;
+			}
+			else {
+				gameTimer = 170;
+			}
+		}
+
+		if (gameTimer > 170) {
+			normalEnemySpawn = false;
+			music.stop();
+		}
+		if (gameTimer > 173) {
+			enemySpawnRate *= .8;
 			gameTimer = 0;
 			lives++;
-			music.stop();
-			enemySpawnRate *= .8;
-			enemySpawnCooldown = 7;
+			enemySpawnCooldown = 8;
 		}
 
 	}
@@ -296,18 +310,22 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 
 void TestScene::updateMovement(float delta, sf::Window * window, Camera* c)
 {
+	sf::Vector2u winsize = window->getSize();
+	float halfx = (winsize.x / 2.0f);
+	float halfy = (winsize.y / 2.0f);
+
 	//window. c
 	sf::Vector2i localPosition = sf::Mouse::getPosition(*window);
-	std::cout << localPosition.x <<	" " << localPosition.y << std::endl;
-	sf::Vector2i offset = localPosition - sf::Vector2i(400,400);
-	//sf::Mouse::setPosition(sf::Vector2i(400, 400), *window);
+	//std::cout << localPosition.x <<	" " << localPosition.y << std::endl;
+	sf::Vector2i offset = localPosition - sf::Vector2i(halfx,halfy);
+	//sf::Mouse::setPosition(sf::Vector2i(halfx,halfy), *window);
 
 
-	float posx = (localPosition.x - 400)/400.0f;
+	float posx = (localPosition.x - halfx)/ halfx;
 	posx = posx < 1 ? posx>-1?posx:-1 :1;
 	posx = posx * 4;
 
-	float posy = (-localPosition.y + 400)/400.0f;
+	float posy = (-localPosition.y + halfy)/ halfy;
 	posy = posy < 1 ? posy>-1?posy:-1 :1;
 	posy = posy * 4;
 	//ship.position = locak //Point::add(ship.position, Point(offset.x * delta, 0,0));
@@ -334,7 +352,7 @@ void TestScene::updateShoot(float delta)
 					playerMissiles[i].launch(ship.position, Point(0, 0, 1));
 
 					fireCooldown = .5f;
-					std::cout << "Launched!" << std::endl;
+					//std::cout << "Launched!" << std::endl;
 					
 					if (gameTimer > 1) {
 

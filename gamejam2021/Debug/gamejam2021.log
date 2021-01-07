@@ -1,9 +1,9 @@
 ﻿  testscene.cpp
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(210): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(250): warning C4305: '*=': truncation from 'double' to 'float'
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(365): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(374): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(383): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(392): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(401): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(207): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(262): warning C4305: '*=': truncation from 'double' to 'float'
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(379): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(388): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(397): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(406): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\aahie\source\repos\gamejam2021\gamejam2021\testscene.cpp(415): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   gamejam2021.vcxproj -> C:\Users\aahie\source\repos\gamejam2021\Debug\gamejam2021.exe
