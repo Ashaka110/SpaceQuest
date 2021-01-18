@@ -6,7 +6,7 @@
 class PolyBoss : public PolyEnemy
 {
     public:
-		PolyBoss();
+		PolyBoss(int level);
 		void render(Camera *camera);
 		void update(float delta);
 
@@ -24,5 +24,6 @@ protected:
 		int health;
 		PolyMissile bmissles[40];
 		bool hit;
+		int level;
 };
 

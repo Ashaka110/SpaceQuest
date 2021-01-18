@@ -67,6 +67,7 @@ void Camera::update(float delta){
         recalculate();
     }
 	*/
+	gameTime += delta;
 }
 
 void Camera::recalculate(){
@@ -115,8 +116,8 @@ Point Camera::worldToCamSpace(Point p){
 
 sf::Vertex Camera::pointToScreenSpace(Point p){
 
-    float x =400 * (1+( p.x / (p.z)));
-    float y =400 * (1+(p.y / (p.z)));
+    float x =400 * (1+((p.x + p.z*p.z*-.000f) / (p.z)));
+    float y =400 * (1+((p.y + p.z*p.z*-.006f * distortiony) / (p.z)));
 
     return sf::Vertex(sf::Vector2f(x, y));
 

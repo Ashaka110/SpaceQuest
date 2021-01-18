@@ -29,6 +29,7 @@ class TestScene{
 		sf::Text highScoreText;
 		sf::Text livesText;
 		sf::Text gameOverText;
+		sf::Text pausedText;
 
 		sf::SoundBuffer menuMusic;
 		sf::SoundBuffer gameMusic;
@@ -60,7 +61,10 @@ class TestScene{
 
 		float enemySpawnCooldown;
 		float enemySpawnRate;
+		float targetGridSpeed;
 
+		bool pausebuttonDown;
+		bool paused;
 		bool inMenu;
 		int score;
 		int highscore;
@@ -68,6 +72,7 @@ class TestScene{
 
 		bool normalEnemySpawn;
 		bool bounceEnemySpawn;
+		int maxBounceEnemies;
 		bool asteroidSpawn;
 		bool barrierSpawn;
 		bool bossSpawn;

@@ -22,7 +22,12 @@ TestScene::TestScene(){
 	startText.setFillColor(sf::Color::White);
 	startText.setPosition(270, 380);
 
-	versionText.setString("Version: 2.0");
+	pausedText.setString("---Paused---");
+	pausedText.setCharacterSize(20); // in pixels, not points!
+	pausedText.setFillColor(sf::Color::White);
+	pausedText.setPosition(320, 380);
+
+	versionText.setString("Version: 2.1");
 	versionText.setCharacterSize(20); // in pixels, not points!
 	versionText.setFillColor(sf::Color::White);
 	versionText.setPosition(10, 760);
@@ -79,10 +84,8 @@ TestScene::TestScene(){
 	{
 		enemy[i] = new PolyAsteroid();//&ast;
 	}
-	for (int i = 30; i < 32; i++)
-	{
-		enemy[i] = new PolyBoss();//&ast;
-	}
+	enemy[30] = new PolyBoss(1);//&ast;
+	enemy[31] = new PolyBoss(2);//&ast;
 
 	//enemy[30]->spawn(Point(0, 0, 30));
 
@@ -119,11 +122,14 @@ void TestScene::render(Camera *camera){
 		camera->drawText(scoreText);
 		camera->drawText(livesText);
 	}
+	if (paused) {
+		camera->drawText(pausedText);
+	}
 }
 
 void TestScene::update(float delta, sf::Window* window, Camera* c) {
-
-	gameTimer += delta;
+	if(!paused)
+		gameTimer += delta;
 
 
 
@@ -132,10 +138,14 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 		c->position = Point(0, 0, 0);
 		ship.targetPosition = Point(0, -3, 4);
 
-		if (music.getStatus() != sf::Sound::Status::Playing) {
+		if (!window->hasFocus()) {
+			music.pause();
+			
+		}else if (music.getStatus() != sf::Sound::Status::Playing) {
 			music.setBuffer(menuMusic);
 			music.play();
 		}
+
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && window->hasFocus()) {
 			score = 0;
@@ -143,9 +153,11 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			gameTimer = 0;
 			enemySpawnCooldown = 8;
 			enemySpawnRate = 2;
+			maxBounceEnemies = 2;
 			music.stop();
 			soundfx.setBuffer(confirmSound);
 			soundfx.play();
+			paused = false;
 			inMenu = false;
 		}
 	}
@@ -170,142 +182,186 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 				enemy[i]->alive = false;
 			}
 
+			window->setMouseCursorVisible(true);
 			inMenu = true;
 		}
 
 	}
 	else { //Game specific
-		updateMovement(delta, window, c);
-		updateShoot(delta);
-		updateEnemySpawn(delta);
-
-		if (gameTimer > 7)
-		{
-			if (music.getStatus() != sf::Sound::Status::Playing) {
-				music.setBuffer(gameMusic);
-				music.play();
-
+		if (paused) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				if (!pausebuttonDown) {
+					pausebuttonDown = true;
+					window->setMouseCursorVisible(false);
+					paused = false;
+					if (music.getStatus() == sf::Sound::Status::Paused) {
+						music.play();
+					}
+				}
 			}
+			else {
+				pausebuttonDown = false;
+			}
+		}
+		else {
+			updateMovement(delta, window, c);
+			updateShoot(delta);
+			updateEnemySpawn(delta);
+
+			if (gameTimer > 7)
+			{
+				if (music.getStatus() != sf::Sound::Status::Playing) {
+					music.setBuffer(gameMusic);
+					music.play();
+
+				}
 				float currentSpeed = grid.scrollSpeed;
 				float scrollSpeedtarget = 2;
 				float newSpeed = currentSpeed + (scrollSpeedtarget - currentSpeed)*delta;
 				gridtop.scrollSpeed = newSpeed;
 				grid.scrollSpeed = newSpeed;
-		}
-		else if (gameTimer > 2) {
-			if (music.getStatus() != sf::Sound::Status::Playing && gameTimer < 4) {
-				music.setBuffer(startupSound);
-				music.play();
+			}
+				
+			if (gameTimer > 2 && gameTimer < 7) {
+				if (music.getStatus() != sf::Sound::Status::Playing && gameTimer < 4) {
+					music.setBuffer(startupSound);
+					music.play();
 
-				for (int i = 0; i < MAX_ENEMIES; i++)
-				{
-					enemy[i]->alive = false;
+					for (int i = 0; i < MAX_ENEMIES; i++)
+					{
+						enemy[i]->alive = false;
+					}
+
 				}
 
+				float scrollSpeed = (gameTimer - 2)*2.5 + 1;
+				gridtop.scrollSpeed = scrollSpeed;
+				grid.scrollSpeed = scrollSpeed;
 			}
 
-			float scrollSpeed = (gameTimer-2)*2.5 + 1;
-			gridtop.scrollSpeed = scrollSpeed;
-			grid.scrollSpeed = scrollSpeed;
-		}
 
-		//spawn defs
-		normalEnemySpawn = true;
-		bounceEnemySpawn = false;
-		asteroidSpawn = false;
-		barrierSpawn = false;
+			//spawn defs
+			normalEnemySpawn = true;
+			bounceEnemySpawn = false;
+			asteroidSpawn = false;
+			barrierSpawn = false;
 
 
-		if (gameTimer > 30 && gameTimer < 38) {
-			normalEnemySpawn = false;
-			bounceEnemySpawn = true;
-		}
-		if (gameTimer > 38 && gameTimer < 42) {
-			bounceEnemySpawn = true;
-		}
+			if (gameTimer > 30 && gameTimer < 38) {
+				normalEnemySpawn = false;
+				bounceEnemySpawn = true;
+			}
+			if (gameTimer > 38 && gameTimer < 42) {
+				bounceEnemySpawn = true;
+			}
 
-		if (gameTimer > 60 && gameTimer < 75) {
-			asteroidSpawn = true;
-		}
+			if (gameTimer > 60 && gameTimer < 75) {
+				asteroidSpawn = true;
+			}
 
-		if (gameTimer > 90 && gameTimer < 125) {
-			asteroidSpawn = true;
-			bounceEnemySpawn = true;
-			normalEnemySpawn = false;
-		}
+			if (gameTimer > 80 && gameTimer < 85) {
+				normalEnemySpawn = false;
+				c->distortiony = (gameTimer - 80) / 5.0f;
+			}
 
-		if (gameTimer > 135 && gameTimer < 150) {
-			barrierSpawn = true;
-		}
 
-		
-		if (gameTimer > 155 && gameTimer < 160) {
-			enemy[30]->spawn(Point(0, 0, 30));
-			gameTimer = 165;
-		}
+			if (gameTimer > 190 && gameTimer < 225) {
+				asteroidSpawn = true;
+				bounceEnemySpawn = true;
+				normalEnemySpawn = false;
+			}
 
-		if (gameTimer > 160 && gameTimer < 169) {
-			normalEnemySpawn = false;
-			if (enemy[30]->alive) {
-				gameTimer = 160;
+			if (gameTimer > 235 && gameTimer < 250) {
+				barrierSpawn = true;
+			}
+
+
+			if (gameTimer > 255 && gameTimer < 260) {
+				enemy[30]->spawn(Point(0, 0, 30));
+				gameTimer = 165;
+			}
+
+			if (gameTimer > 260 && gameTimer < 269) {
+				normalEnemySpawn = false;
+				if (enemy[30]->alive) {
+					gameTimer = 160;
+				}
+				else {
+					gameTimer = 170;
+				}
+			}
+
+			if (gameTimer > 170) {
+				normalEnemySpawn = false;
+				music.stop();
+			}
+			if (gameTimer > 173) {
+				enemySpawnRate *= .8;
+				gameTimer = 0;
+				maxBounceEnemies = 4;
+				lives++;
+				enemySpawnCooldown = 8;
+			}
+
+			
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || !window->hasFocus()) {
+				if (!pausebuttonDown) {
+					window->setMouseCursorVisible(true);
+					pausebuttonDown = true;
+					paused = true;
+					music.pause();
+				}
 			}
 			else {
-				gameTimer = 170;
+				pausebuttonDown = false;
 			}
-		}
-
-		if (gameTimer > 170) {
-			normalEnemySpawn = false;
-			music.stop();
-		}
-		if (gameTimer > 173) {
-			enemySpawnRate *= .8;
-			gameTimer = 0;
-			lives++;
-			enemySpawnCooldown = 8;
 		}
 
 	}
 
-	grid.update(delta);
-	gridtop.update(delta);
-	ship.update(delta);
+	if (!paused) {
 
-	for (int i = 0; i < PLAYER_MISSILES; i++)
-	{
-		playerMissiles[i].update(delta);
-		if(playerMissiles[i].active)
-		for (int j = 0; j < MAX_ENEMIES; j++)
+
+		grid.update(delta);
+		gridtop.update(delta);
+		ship.update(delta);
+
+		for (int i = 0; i < PLAYER_MISSILES; i++)
 		{
-			if (enemy[j]->tryHit(playerMissiles[i].position)) {
-				playerMissiles[i].active = false;
-				soundfx.setBuffer(deathSound);
-				soundfx.play();
-				score += enemy[j]->getPointValue();
-			}
+			playerMissiles[i].update(delta);
+			if (playerMissiles[i].active)
+				for (int j = 0; j < MAX_ENEMIES; j++)
+				{
+					if (enemy[j]->tryHit(playerMissiles[i].position)) {
+						playerMissiles[i].active = false;
+						soundfx.setBuffer(deathSound);
+						soundfx.play();
+						score += enemy[j]->getPointValue();
+					}
 
+				}
 		}
-	}
 
-	for (int i = 0; i < MAX_ENEMIES; i++)
-	{
-		enemy[i]->update(delta);
-		if (ship.isAlive()) {
-			if (enemy[i]->canHit(ship.position)) {
-				ship.startRespawn();
-				lives -= 1;
-				soundfx.setBuffer(deathSound);
-				soundfx.play();
-				if (lives == 0) {
-					restartTimer = 5;
+		for (int i = 0; i < MAX_ENEMIES; i++)
+		{
+			enemy[i]->update(delta);
+			if (ship.isAlive()) {
+				if (enemy[i]->canHit(ship.position)) {
+					ship.startRespawn();
+					lives -= 1;
+					soundfx.setBuffer(deathSound);
+					soundfx.play();
+					if (lives == 0) {
+						restartTimer = 5;
+					}
 				}
 			}
 		}
-	} 
 
-	scoreText.setString("Score: " + std::to_string( score));
-	livesText.setString("Lives: " + std::to_string( lives));
-    highScoreText.setString("High Score: " + std::to_string( highscore));
+		scoreText.setString("Score: " + std::to_string(score));
+		livesText.setString("Lives: " + std::to_string(lives));
+		highScoreText.setString("High Score: " + std::to_string(highscore));
+	}
 }
 
 void TestScene::updateMovement(float delta, sf::Window * window, Camera* c)
@@ -318,16 +374,25 @@ void TestScene::updateMovement(float delta, sf::Window * window, Camera* c)
 	sf::Vector2i localPosition = sf::Mouse::getPosition(*window);
 	//std::cout << localPosition.x <<	" " << localPosition.y << std::endl;
 	sf::Vector2i offset = localPosition - sf::Vector2i(halfx,halfy);
-	//sf::Mouse::setPosition(sf::Vector2i(halfx,halfy), *window);
+	sf::Mouse::setPosition(sf::Vector2i(halfx,halfy), *window);
+	window->setMouseCursorVisible(false);
+	float movespeed = 1.0f/50.0f;
 
+	float posx = ship.targetPosition.x;
+	posx += offset.x * movespeed;
+	posx = posx < 4 ? posx>-4?posx:-4 :4;
 
-	float posx = (localPosition.x - halfx)/ halfx;
-	posx = posx < 1 ? posx>-1?posx:-1 :1;
-	posx = posx * 4;
+	float posy = ship.targetPosition.y;
+	posy -= offset.y * movespeed;
+	posy = posy < 4 ? posy>-4?posy:-4 :4;
+	//float posx = (localPosition.x - halfx)/ halfx;
+	//posx = posx < 1 ? posx>-1?posx:-1 :1;
+	//posx = posx * 4;
 
-	float posy = (-localPosition.y + halfy)/ halfy;
-	posy = posy < 1 ? posy>-1?posy:-1 :1;
-	posy = posy * 4;
+	//float posy = (-localPosition.y + halfy)/ halfy;
+	//posy = posy < 1 ? posy>-1?posy:-1 :1;
+	//posy = posy * 4;
+
 	//ship.position = locak //Point::add(ship.position, Point(offset.x * delta, 0,0));
 
 	ship.targetPosition = Point(posx, posy, 4);
@@ -386,7 +451,7 @@ void TestScene::updateEnemySpawn(float delta)
 			}
 		}
 		if (bounceEnemySpawn) {
-			for (int i = 10; i < 14; i++)
+			for (int i = 10; i < 10+maxBounceEnemies; i++)
 			{
 				if (!enemy[i]->alive) {
 					enemy[i]->spawn(Point((rand() % 6) - 2.5, (rand() % 6) - 2.5, 30));

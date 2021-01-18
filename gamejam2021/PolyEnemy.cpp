@@ -4,7 +4,7 @@ PolyEnemy::PolyEnemy()
 {
 	angle = 0;
 	fireCooldown = 1;
-	color = sf::Color(200, 0, 0);
+	color = sf::Color(200, 50, 0);
 }
 
 

@@ -1,7 +1,8 @@
 #include "PolyBoss.h"
 
-PolyBoss::PolyBoss()
+PolyBoss::PolyBoss(int level)
 {
+	this->level = level;
 	angle = 0;
 	fireCooldown = 1;
 	direction = Point(1, 1.5, 0);
