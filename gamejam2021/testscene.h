@@ -33,6 +33,7 @@ class TestScene{
 
 		sf::SoundBuffer menuMusic;
 		sf::SoundBuffer gameMusic;
+		sf::SoundBuffer bossMusic;
 		sf::SoundBuffer shootSound;
 		sf::SoundBuffer deathSound;
 		sf::SoundBuffer startupSound;
@@ -61,7 +62,8 @@ class TestScene{
 
 		float enemySpawnCooldown;
 		float enemySpawnRate;
-		float targetGridSpeed;
+
+		float scrollSpeedtarget = 1;
 
 		bool pausebuttonDown;
 		bool paused;

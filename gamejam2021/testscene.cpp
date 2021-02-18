@@ -58,6 +58,7 @@ TestScene::TestScene(){
 	startupSound.loadFromFile("Resources/SFX_1.wav");
 	gameMusic.loadFromFile("Resources/JDB_Wicked.wav");
 	menuMusic.loadFromFile("Resources/JDB_Wicked_Reprise.wav");
+	bossMusic.loadFromFile("Resources/JDB_City_of_Night.wav");
 	
 
 	music.setVolume(10);
@@ -138,6 +139,8 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 		c->position = Point(0, 0, 0);
 		ship.targetPosition = Point(0, -3, 4);
 
+		c->distortiony = 0;
+
 		if (!window->hasFocus()) {
 			music.pause();
 			
@@ -171,6 +174,8 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 		float newSpeed = currentSpeed + (scrollSpeedtarget - currentSpeed)*delta;
 		gridtop.scrollSpeed = newSpeed;
 		grid.scrollSpeed = newSpeed;
+
+		c->distortiony = c->distortiony + ( -c->distortiony)*delta * .5f;
 
 		if (restartTimer <= 0) {
 			if (score > highscore) {
@@ -208,18 +213,21 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			updateShoot(delta);
 			updateEnemySpawn(delta);
 
-			if (gameTimer > 7)
+
+			//update Scroll speed
+			float currentSpeed = grid.scrollSpeed;
+			float newSpeed = currentSpeed + (scrollSpeedtarget - currentSpeed)*delta;
+			gridtop.scrollSpeed = newSpeed;
+			grid.scrollSpeed = newSpeed;
+
+
+			if (gameTimer > 7 && !(gameTimer>80 && gameTimer< 185))
 			{
 				if (music.getStatus() != sf::Sound::Status::Playing) {
 					music.setBuffer(gameMusic);
 					music.play();
-
 				}
-				float currentSpeed = grid.scrollSpeed;
-				float scrollSpeedtarget = 2;
-				float newSpeed = currentSpeed + (scrollSpeedtarget - currentSpeed)*delta;
-				gridtop.scrollSpeed = newSpeed;
-				grid.scrollSpeed = newSpeed;
+				scrollSpeedtarget = 2;
 			}
 				
 			if (gameTimer > 2 && gameTimer < 7) {
@@ -234,9 +242,10 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 
 				}
 
-				float scrollSpeed = (gameTimer - 2)*2.5 + 1;
-				gridtop.scrollSpeed = scrollSpeed;
-				grid.scrollSpeed = scrollSpeed;
+				scrollSpeedtarget = 12;
+				//float scrollSpeed = (gameTimer - 2)*2.5 + 1;
+				//gridtop.scrollSpeed = scrollSpeed;
+				//grid.scrollSpeed = scrollSpeed;
 			}
 
 
@@ -246,6 +255,9 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			asteroidSpawn = false;
 			barrierSpawn = false;
 
+			if (gameTimer > 15 && gameTimer < 38) {
+				gameTimer = 80;
+			}
 
 			if (gameTimer > 30 && gameTimer < 38) {
 				normalEnemySpawn = false;
@@ -259,13 +271,55 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 				asteroidSpawn = true;
 			}
 
-			if (gameTimer > 80 && gameTimer < 85) {
+
+			//
+			//
+			//Boss 1
+			if (gameTimer > 80 && gameTimer < 191) {
 				normalEnemySpawn = false;
-				c->distortiony = (gameTimer - 80) / 5.0f;
+			}
+			if (gameTimer > 83 && gameTimer < 85) {
+				music.stop();
+			}
+			if (gameTimer > 85 && gameTimer < 93) {
+				c->distortiony = (gameTimer - 85.0f) / 8.0f;
+				scrollSpeedtarget = 12;
+
+				if (music.getStatus() != sf::Sound::Status::Playing && gameTimer < 87) {
+					music.setBuffer(startupSound);
+					music.play();
+				}
 			}
 
+			if (gameTimer > 95 && gameTimer < 105) {
+				enemy[31]->spawn(Point(0, 0, 30));
+				gameTimer = 120;
 
-			if (gameTimer > 190 && gameTimer < 225) {
+			}
+
+			if (gameTimer > 120 && gameTimer < 125) {
+				if (music.getStatus() != sf::Sound::Status::Playing) {
+					music.setBuffer(bossMusic);
+					music.play();
+				}
+
+				if (enemy[31]->alive) {
+					gameTimer = 121;
+				}
+				else {
+					gameTimer = 175;
+				}
+			}
+
+			if (gameTimer > 175 && gameTimer < 183) {
+				music.stop();
+				c->distortiony = 1.0f - (gameTimer - 175.0f) / 8.0f;
+				scrollSpeedtarget = 8;
+			}
+			//
+			//
+			//
+			if (gameTimer > 185 && gameTimer < 225) {
 				asteroidSpawn = true;
 				bounceEnemySpawn = true;
 				normalEnemySpawn = false;
@@ -277,13 +331,13 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 
 
 			if (gameTimer > 255 && gameTimer < 260) {
-				enemy[30]->spawn(Point(0, 0, 30));
-				gameTimer = 165;
+				enemy[31]->spawn(Point(0, 0, 30));
+				gameTimer = 265;
 			}
 
 			if (gameTimer > 260 && gameTimer < 269) {
 				normalEnemySpawn = false;
-				if (enemy[30]->alive) {
+				if (enemy[31]->alive) {
 					gameTimer = 160;
 				}
 				else {
@@ -291,11 +345,11 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 				}
 			}
 
-			if (gameTimer > 170) {
+			if (gameTimer > 270) {
 				normalEnemySpawn = false;
 				music.stop();
 			}
-			if (gameTimer > 173) {
+			if (gameTimer > 273) {
 				enemySpawnRate *= .8;
 				gameTimer = 0;
 				maxBounceEnemies = 4;

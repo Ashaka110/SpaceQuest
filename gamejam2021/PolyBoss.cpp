@@ -6,12 +6,13 @@ PolyBoss::PolyBoss(int level)
 	angle = 0;
 	fireCooldown = 1;
 	direction = Point(1, 1.5, 0);
+	position = Point(0, 0, -20);
 	
 }
 
 void PolyBoss::render(Camera * camera)
 {
-	if (hit) {
+	if (hitTimer > 0) {
 		color = sf::Color(200, 0, 0);
 		hit = false;
 	}
@@ -73,28 +74,37 @@ void PolyBoss::render(Camera * camera)
 
 void PolyBoss::update(float delta)
 {
+	hitTimer -= delta;
 	if (alive) {
-		if (position.x < -3 || position.x > 3) {
-			direction.x *= -1;
+		if (spawntimer > .1f) {
+			spawntimer -= spawntimer* delta;
+			position.z = 30 + spawntimer *50;
+			angle = 3.141 / 2;
 		}
-		if (position.y < -3 || position.y > 3) {
-			direction.y *= -1;
-		}
-		
-		position = Point::add(position,Point::scale( direction, delta));
-		//position = Point(0, 0, 30);
-		angle = 3.141 / 2;
+		else {
+			if (position.x < -3 || position.x > 3) {
+				direction.x *= -1;
+			}
+			if (position.y < -3 || position.y > 3) {
+				direction.y *= -1;
+			}
 
-		if (fireCooldown > 0) {
-			fireCooldown -= delta;
-		} else {
-			fireCooldown = 1.2;
+			position = Point::add(position, Point::scale(direction, delta));
+			//position = Point(0, 0, 30);
+			angle = 3.141 / 2;
 
-			float fireheight = ((rand() % 14) - 7) / 120.0;
-			for (int i = 0; i < 10; i++)
-			{
-				float angle = (i / 10.0) * (3.141/4) - (3.141/8);
-				fire(Point(sin(angle)/1.5, fireheight, -cos(angle)/1.5));
+			if (fireCooldown > 0) {
+				fireCooldown -= delta;
+			}
+			else {
+				fireCooldown = 1.2;
+
+				float fireheight = ((rand() % 14) - 7) / 120.0;
+				for (int i = 0; i < 10; i++)
+				{
+					float angle = (i / 10.0) * (3.141 / 4) - (3.141 / 8);
+					fire(Point(sin(angle) / 1.5, fireheight, -cos(angle) / 1.5));
+				}
 			}
 		}
 
@@ -132,6 +142,7 @@ bool PolyBoss::tryHit(Point pos)
 		if (Point::sqrDistance(pos, position) < 5) {
 			hit = true;
 			health -= 1;
+			hitTimer = .1f;
 			if (health <= 0) {
 				onDie();
 				Point::Scale(shipdestroy, 24, 10);
@@ -170,6 +181,7 @@ bool PolyBoss::canHit(Point pos)
 
 void PolyBoss::spawn(Point pos)
 {
+	spawntimer = 5;
 	alive = true;
 	position = pos;
 	health = 50;

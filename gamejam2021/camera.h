@@ -18,7 +18,7 @@ class Camera{
 		void drawText(sf::Text text);
 
         Point position;
-		float distortiony = 0;
+		float distortiony = 0 ;
     private:
 
         Point forward;

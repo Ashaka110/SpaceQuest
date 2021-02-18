@@ -20,6 +20,8 @@ protected:
 		void onDie();
 	private:
 
+		float spawntimer;
+		float hitTimer;
 		void fire(Point direction);
 		int health;
 		PolyMissile bmissles[40];
