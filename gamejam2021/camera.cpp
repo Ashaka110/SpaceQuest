@@ -116,8 +116,15 @@ Point Camera::worldToCamSpace(Point p){
 
 sf::Vertex Camera::pointToScreenSpace(Point p){
 
-    float x =400 * (1+((p.x + p.z*p.z*-.000f) / (p.z)));
-    float y =400 * (1+((p.y + p.z*p.z*-.006f * distortiony) / (p.z)));
+    sf::Vector2u size = window->getSize();
+        //window->setSize(size);
+
+    int offset = ((int)size.x - (int)size.y) / 2;
+    int boxsize = size.x > size.y ? size.y : size.x;
+
+
+    float x = boxsize/2.0f * (1+((p.x + p.z*p.z*-.000f) / (p.z))) + (offset > 0 ? offset : 0);
+    float y = boxsize/2.0f * (1+((p.y + p.z*p.z*-.006f * distortiony) / (p.z))) +(offset < 0 ? -offset : 0) ;
 
     return sf::Vertex(sf::Vector2f(x, y));
 

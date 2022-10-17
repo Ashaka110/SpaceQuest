@@ -19,13 +19,13 @@ class Camera{
 
         Point position;
 		float distortiony = 0 ;
+        sf::RenderWindow *window;
     private:
 
         Point forward;
         Point right;
 		sf::Font font;
 
-        sf::RenderWindow *window;
 		
 
         void recalculate();

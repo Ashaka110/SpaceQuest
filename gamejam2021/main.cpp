@@ -7,7 +7,12 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Space Quest");
+    int screenwidth = sf::VideoMode::getDesktopMode().width;
+    int screenheigth = sf::VideoMode::getDesktopMode().height;
+    int screensize = screenwidth > screenheigth ? screenheigth:screenwidth ;
+
+
+    sf::RenderWindow window(sf::VideoMode(1280,720), "Space Quest");
     sf::Clock clock;
 
     TestScene t;
@@ -17,6 +22,8 @@ int main()
     while (window.isOpen())
     {
 
+        //window.setSize(sf::Vector2u(500,500));
+        //window.
         
     	sf::Time elapsed = clock.restart();	
   		sf::Event event;
@@ -24,6 +31,10 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::Resized) {
+                sf::View View(sf::FloatRect(0, 0, event.size.width, event.size.height));
+                window.setView(View);
+            }
         }
 
 		float delta = elapsed.asSeconds();

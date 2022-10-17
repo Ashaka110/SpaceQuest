@@ -20,37 +20,30 @@ TestScene::TestScene(){
 	startText.setString("---CLICK TO START---");
 	startText.setCharacterSize(20); // in pixels, not points!
 	startText.setFillColor(sf::Color::White);
-	startText.setPosition(270, 380);
 
 	pausedText.setString("---Paused---");
 	pausedText.setCharacterSize(20); // in pixels, not points!
 	pausedText.setFillColor(sf::Color::White);
-	pausedText.setPosition(320, 380);
 
-	versionText.setString("Version: 2.3");
+	versionText.setString("Version: 2.4");
 	versionText.setCharacterSize(20); // in pixels, not points!
 	versionText.setFillColor(sf::Color::White);
-	versionText.setPosition(10, 760);
 
 	scoreText.setString("Score: 00000000");
 	scoreText.setCharacterSize(20); // in pixels, not points!
 	scoreText.setFillColor(sf::Color::White);
-	scoreText.setPosition(550, 10);
 
 	highScoreText.setString("High Score: 00000000");
 	highScoreText.setCharacterSize(20); // in pixels, not points!
 	highScoreText.setFillColor(sf::Color::White);
-	highScoreText.setPosition(500, 10);
 
 	livesText.setString("Lives: 3");
 	livesText.setCharacterSize(20); // in pixels, not points!
 	livesText.setFillColor(sf::Color::White);
-	livesText.setPosition(10, 760);
 
 	gameOverText.setString("GAME OVER");
 	gameOverText.setCharacterSize(20); // in pixels, not points!
 	gameOverText.setFillColor(sf::Color::White);
-	gameOverText.setPosition(335, 380);
 
 	shootSound.loadFromFile("Resources/SFX_20.wav");
 	confirmSound.loadFromFile("Resources/SFX_4.wav");
@@ -103,6 +96,8 @@ TestScene::TestScene(){
 
 void TestScene::render(Camera *camera){
 
+	updateUIPositions(camera);
+
 	grid.render(camera);
 	gridtop.render(camera);
 
@@ -138,6 +133,26 @@ void TestScene::render(Camera *camera){
 	if (paused) {
 		camera->drawText(pausedText);
 	}
+}
+
+void TestScene::updateUIPositions(Camera *camera)
+{
+    sf::Vector2u size = camera->window->getSize();
+
+    int offset = ((int)size.x - (int)size.y) / 2;
+    int xoffset = offset > 0? offset:0;
+    int yoffset = offset < 0? -offset:0;
+    int boxsize = size.x > size.y ? size.y : size.x;
+
+	startText.setPosition(size.x/2 - 130, size.y/2 - 20);
+	pausedText.setPosition(size.x/2 - 80, size.y/2 - 20);
+	gameOverText.setPosition(size.x/2 - 65, size.y/2 - 20);
+
+	versionText.setPosition(xoffset + 10, yoffset + boxsize - 40);
+	livesText.setPosition(xoffset + 10, yoffset + boxsize - 40);
+
+	scoreText.setPosition(xoffset + boxsize - 250,yoffset + 10);
+	highScoreText.setPosition(xoffset + boxsize - 300, yoffset + 10);
 }
 
 void TestScene::update(float delta, sf::Window* window, Camera* c) {
@@ -574,6 +589,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 		highScoreText.setString("High Score: " + std::to_string(highscore));
 	}
 }
+
 
 void TestScene::updateMovement(float delta, sf::Window * window, Camera* c)
 {

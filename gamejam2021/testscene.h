@@ -45,6 +45,7 @@ class TestScene{
 		sf::Sound music;
 		sf::Sound soundfx;
 
+		void updateUIPositions(Camera *camera);
 		void updateMovement(float delta, sf::Window* window, Camera *c);
 		void updateShoot(float delta);
 		void updateEnemySpawn(float delta);
