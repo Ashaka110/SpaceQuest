@@ -13,12 +13,19 @@ class PolyShip
 		bool isAlive();
 
 		void startRespawn();
+		bool hasShield;
 
+		float shieldSpawnTimer;
 		Point targetPosition;
 		Point position;
+		Point shieldPosition;
 	private:
 		float angle;
 		float targetAngle;
+
+		float shieldAngle;
+		float shieldTimer;
+
 
 		float respawnTimer;
 		bool visible;

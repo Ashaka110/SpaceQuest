@@ -12,10 +12,17 @@ class PolyAsteroid : public PolyEnemy
 		bool tryHit(Point pos);
 		bool canHit(Point pos);
 		int getPointValue();
+		virtual bool spawnsShield();
+		virtual bool spawnsHealth();
+
+		void spawn(Point pos);
+
+		int health;
 
 		//Point direction;
 		//Point position;
 	private:
+		float hitTimer;
 
 };
 

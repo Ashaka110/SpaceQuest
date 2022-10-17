@@ -6,8 +6,16 @@ PolyBoss::PolyBoss(int level)
 	angle = 0;
 	fireCooldown = 1;
 	direction = Point(1, 1.5, 0);
-	position = Point(0, 0, -20);
-	
+	position = Point(0, 0, 20);
+	alive = false;
+
+	if (level == 1) {
+		direction = Point(1, 1.5, 0);
+	}
+	else {
+		direction = Point(3, 1.5, 0);
+	}
+
 }
 
 void PolyBoss::render(Camera * camera)
@@ -79,25 +87,30 @@ void PolyBoss::update(float delta)
 		if (spawntimer > .1f) {
 			spawntimer -= spawntimer* delta;
 			position.z = 30 + spawntimer *50;
-			angle = 3.141 / 2;
+			angle = 0;
 		}
 		else {
-			if (position.x < -3 || position.x > 3) {
+			if (position.x < -3*level|| position.x > 3*level) {
 				direction.x *= -1;
 			}
-			if (position.y < -3 || position.y > 3) {
+			if (position.y < -3*level || position.y > 3*level) {
 				direction.y *= -1;
 			}
 
 			position = Point::add(position, Point::scale(direction, delta));
 			//position = Point(0, 0, 30);
-			angle = 3.141 / 2;
+			angle = 0;
 
 			if (fireCooldown > 0) {
 				fireCooldown -= delta;
 			}
 			else {
-				fireCooldown = 1.2;
+				if (level == 1) {
+					fireCooldown = 4;
+				}
+				else {
+					fireCooldown = 1.1;
+				}
 
 				float fireheight = ((rand() % 14) - 7) / 120.0;
 				for (int i = 0; i < 10; i++)
@@ -117,12 +130,13 @@ void PolyBoss::update(float delta)
 			Point b = shipdestroy[i * 2 + 1];
 
 			Point center = Point::getCenter(a, b);
-			Point offset = Point::scale(Point::add(center, Point::scale(position, -1)), delta * 2);
+			Point offset = Point::scale(Point::add(center, Point::scale(position, -1)), delta * 3.7f);
 			shipdestroy[i * 2] = Point::add(a, offset);
 			shipdestroy[i * 2 + 1] = Point::add(b, offset);
-			shipdestroy[i * 2] = Point::RotateAroundZ(shipdestroy[i * 2], center, (delta + i * .05) * (i % 2 == 1 ? -1 : 1));
-			shipdestroy[i * 2 + 1] = Point::RotateAroundZ(shipdestroy[i * 2 + 1], center, (delta + i * .05) * (i % 2 == 1 ? -1 : 1));
+			shipdestroy[i * 2] = Point::RotateAroundZ(shipdestroy[i * 2], center, .4* (delta + i * .05) * (i % 2 == 1 ? -1 : 1));
+			shipdestroy[i * 2 + 1] = Point::RotateAroundZ(shipdestroy[i * 2 + 1], center,  .4*(delta + i * .05) * (i % 2 == 1 ? -1 : 1));
 		}
+						 
 	}
 
 	for (int i = 0; i < 40; i++)
@@ -136,6 +150,16 @@ int PolyBoss::getPointValue()
 	return 100;
 }
 
+bool PolyBoss::spawnsShield()
+{
+	return false;
+}
+
+bool PolyBoss::spawnsHealth()
+{
+	return false;
+}
+
 bool PolyBoss::tryHit(Point pos)
 {
 	if (alive) {
@@ -145,7 +169,7 @@ bool PolyBoss::tryHit(Point pos)
 			hitTimer = .1f;
 			if (health <= 0) {
 				onDie();
-				Point::Scale(shipdestroy, 24, 10);
+				//Point::Scale(shipdestroy, 24, 10);
 			}
 			return true;
 		}
@@ -210,7 +234,6 @@ void PolyBoss::onDie()
 	shipdestroy[2] = Point(0, 0, 0);	//0
 	shipdestroy[3] = Point(1, 0, .5);    //2
 	shipdestroy[4] = Point(0, 0, -1);    //3
-		void onDie();
 	shipdestroy[5] = Point(-1, 0, .5);    //1
 	shipdestroy[6] = Point(0, 0, -1);    //3
 	shipdestroy[7] = Point(1, 0, .5);    //2
@@ -233,7 +256,7 @@ void PolyBoss::onDie()
 	shipdestroy[22] = Point(0, 0, -1);    //3
 	shipdestroy[23] = Point(0, .25f, -.3f);    //5
 
-	Point::RotateZ(shipdestroy, 24, angle  + 3.141/2);
+	Point::RotateZ(shipdestroy, 24, angle);
 	Point::Scale(shipdestroy, 24, 10);
 	Point::Translate(shipdestroy, 24, position);
 }

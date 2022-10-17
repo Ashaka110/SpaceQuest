@@ -11,10 +11,13 @@ class PolyEnemy
 
 		virtual bool tryHit(Point pos);
 		virtual bool canHit(Point pos);
+		virtual bool spawnsShield();
+		virtual bool spawnsHealth();
 
 		virtual int getPointValue();
 
 		virtual void spawn(Point pos);
+
 
 		Point position;
 		Point direction;

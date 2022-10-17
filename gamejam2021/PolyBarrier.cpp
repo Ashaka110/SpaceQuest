@@ -74,7 +74,7 @@ bool PolyBarrier::tryHit(Point pos)
 {
 	if (alive) {
 	//Point diff = Point::add(pos, Point::scale(position, -1));
-	Point rot = Point::RotateAroundZ(pos, position, angle + 3.141/2);
+	Point rot = Point::RotateAroundZ(pos, position, angle);
 	float dist = Point::sqrDistance(Point(rot.x, 0, rot.z), Point(position.x, 0, position.z));
 	return dist < .5;
 	}
@@ -84,7 +84,7 @@ bool PolyBarrier::tryHit(Point pos)
 bool PolyBarrier::canHit(Point pos)
 {
 	if (alive) {
-	Point rot = Point::RotateAroundZ(pos, position, angle+ 3.141/2);
+	Point rot = Point::RotateAroundZ(pos, position, angle);
 	float dist = Point::sqrDistance(Point(rot.x, 0, rot.z), Point(position.x, 0, position.z));
 	return dist < .5;
 	}

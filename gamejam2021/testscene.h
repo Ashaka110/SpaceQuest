@@ -12,9 +12,12 @@
 #include "PolyMissile.h"
 #include "PolyEnemy.h"
 #include "PolyAsteroid.h"
+#include "PolyHealthUp.h"
+#include "PolyShieldUp.h"
 
 #define PLAYER_MISSILES 5
 #define MAX_ENEMIES 32
+#define MAX_POWERUPS 5
 
 class TestScene{
     public:
@@ -53,6 +56,8 @@ class TestScene{
 		PolyGrid gridtop;
 		PolyMissile playerMissiles[PLAYER_MISSILES];
 		PolyEnemy* enemy[MAX_ENEMIES];
+		PolyHealthUp* HealthUp[MAX_ENEMIES];
+		PolyShieldUp* ShieldUp[MAX_ENEMIES];
 		//PolyAsteroid asteroids[MAX_ENEMIES];
 
 		float gameTimer;

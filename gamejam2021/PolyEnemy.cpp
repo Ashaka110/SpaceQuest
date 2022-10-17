@@ -91,11 +91,11 @@ void PolyEnemy::update(float delta)
 			Point b = shipdestroy[i * 2 + 1];
 
 			Point center = Point::getCenter(a, b);
-			Point offset = Point::scale(Point::add(center, Point::scale(position, -1)), delta * 2);
+			Point offset = Point::scale(Point::add(center, Point::scale(position, -1)), delta * 3);
 			shipdestroy[i * 2] = Point::add(a, offset);
 			shipdestroy[i * 2 + 1] = Point::add(b, offset);
-			shipdestroy[i * 2] = Point::RotateAroundZ(shipdestroy[i * 2], center, (delta + i * .05) * (i % 2 == 1 ? -1 : 1));
-			shipdestroy[i * 2 + 1] = Point::RotateAroundZ(shipdestroy[i * 2 + 1], center, (delta + i * .05) * (i % 2 == 1 ? -1 : 1));
+			shipdestroy[i * 2] = Point::RotateAroundZ(shipdestroy[i * 2], center, .3f* (delta + i * .05) * (i % 2 == 1 ? -1 : 1));
+			shipdestroy[i * 2 + 1] = Point::RotateAroundZ(shipdestroy[i * 2 + 1], center, .3f*(delta + i * .05) * (i % 2 == 1 ? -1 : 1));
 		}
 	}
 
@@ -137,6 +137,16 @@ bool PolyEnemy::canHit(Point pos)
 	}
 
 	return false;
+}
+
+bool PolyEnemy::spawnsShield()
+{
+	return rand()%15 == 1;
+}
+
+bool PolyEnemy::spawnsHealth()
+{
+	return rand()%200 == 1;
 }
 
 int PolyEnemy::getPointValue()

@@ -27,7 +27,7 @@ TestScene::TestScene(){
 	pausedText.setFillColor(sf::Color::White);
 	pausedText.setPosition(320, 380);
 
-	versionText.setString("Version: 2.1");
+	versionText.setString("Version: 2.3");
 	versionText.setCharacterSize(20); // in pixels, not points!
 	versionText.setFillColor(sf::Color::White);
 	versionText.setPosition(10, 760);
@@ -92,6 +92,13 @@ TestScene::TestScene(){
 
 	normalEnemySpawn = true;
 	enemySpawnRate = 2;
+
+	for (int i = 0; i < MAX_POWERUPS; i++)
+	{
+		HealthUp[i] = new PolyHealthUp();
+		ShieldUp[i] = new PolyShieldUp();
+	}
+
 }
 
 void TestScene::render(Camera *camera){
@@ -102,6 +109,11 @@ void TestScene::render(Camera *camera){
 	for (int i = 0; i < MAX_ENEMIES; i++)
 	{
 		enemy[i]->render(camera);
+	}
+	for (int i = 0; i < MAX_POWERUPS; i++)
+	{
+		HealthUp[i]->render(camera);
+		ShieldUp[i]->render(camera);
 	}
 
 	for (int i = 0; i < PLAYER_MISSILES; i++)
@@ -138,6 +150,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 
 		c->position = Point(0, 0, 0);
 		ship.targetPosition = Point(0, -3, 4);
+		ship.hasShield = false;
 
 		c->distortiony = 0;
 
@@ -194,7 +207,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 	}
 	else { //Game specific
 		if (paused) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)&& window->hasFocus()) {
 				if (!pausebuttonDown) {
 					pausebuttonDown = true;
 					window->setMouseCursorVisible(false);
@@ -221,7 +234,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			grid.scrollSpeed = newSpeed;
 
 
-			if (gameTimer > 7 && !(gameTimer>80 && gameTimer< 185))
+			if (gameTimer > 7 && !(gameTimer>80 && gameTimer< 180) && !(gameTimer>280 && gameTimer< 380))
 			{
 				if (music.getStatus() != sf::Sound::Status::Playing) {
 					music.setBuffer(gameMusic);
@@ -235,6 +248,8 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 					music.setBuffer(startupSound);
 					music.play();
 
+					//ship.hasShield = true;
+					//ship.shieldSpawnTimer = 3;
 					for (int i = 0; i < MAX_ENEMIES; i++)
 					{
 						enemy[i]->alive = false;
@@ -242,6 +257,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 
 				}
 
+				//gameTimer = 80;
 				scrollSpeedtarget = 12;
 				//float scrollSpeed = (gameTimer - 2)*2.5 + 1;
 				//gridtop.scrollSpeed = scrollSpeed;
@@ -255,8 +271,11 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			asteroidSpawn = false;
 			barrierSpawn = false;
 
+			if (gameTimer > 8 && gameTimer < 9) {
+				//HealthUp[0]->spawn(Point(0, 0, 15));
+			}
+
 			if (gameTimer > 15 && gameTimer < 38) {
-				gameTimer = 80;
 			}
 
 			if (gameTimer > 30 && gameTimer < 38) {
@@ -281,7 +300,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			if (gameTimer > 83 && gameTimer < 85) {
 				music.stop();
 			}
-			if (gameTimer > 85 && gameTimer < 93) {
+			if (gameTimer > 85 && gameTimer < 90) {
 				c->distortiony = (gameTimer - 85.0f) / 8.0f;
 				scrollSpeedtarget = 12;
 
@@ -291,8 +310,8 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 				}
 			}
 
-			if (gameTimer > 95 && gameTimer < 105) {
-				enemy[31]->spawn(Point(0, 0, 30));
+			if (gameTimer > 90 && gameTimer < 105) {
+				enemy[30]->spawn(Point(0, 0, 30));
 				gameTimer = 120;
 
 			}
@@ -303,23 +322,37 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 					music.play();
 				}
 
-				if (enemy[31]->alive) {
+				if (enemy[30]->alive) {
 					gameTimer = 121;
 				}
 				else {
-					gameTimer = 175;
+					gameTimer = 165;
 				}
 			}
 
-			if (gameTimer > 175 && gameTimer < 183) {
+			if (gameTimer > 165 && gameTimer < 174) {
 				music.stop();
-				c->distortiony = 1.0f - (gameTimer - 175.0f) / 8.0f;
-				scrollSpeedtarget = 8;
+				scrollSpeedtarget = 4;
+			}
+
+			if (gameTimer > 165 && gameTimer < 166) {
+				ShieldUp[2]->spawn(Point(2, 0, 25));
+				HealthUp[2]->spawn(Point(-2, 0, 25));
+			}
+
+			if (gameTimer > 175 && gameTimer < 180) {
+				c->distortiony = 1.0f - (gameTimer - 172.0f) / 8.0f;
+				scrollSpeedtarget = 12;
+
+				if (music.getStatus() != sf::Sound::Status::Playing && gameTimer < 176) {
+					music.setBuffer(startupSound);
+					music.play();
+				}
 			}
 			//
 			//
 			//
-			if (gameTimer > 185 && gameTimer < 225) {
+			if (gameTimer > 180 && gameTimer < 225) {
 				asteroidSpawn = true;
 				bounceEnemySpawn = true;
 				normalEnemySpawn = false;
@@ -330,6 +363,73 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			}
 
 
+//////
+
+			if (gameTimer > 280 && gameTimer < 391) {
+				normalEnemySpawn = false;
+			}
+			if (gameTimer > 283 && gameTimer < 285) {
+				music.stop();
+			}
+			if (gameTimer > 285 && gameTimer < 290) {
+				c->distortiony = -((gameTimer - 285.0f) / 8.0f);
+				scrollSpeedtarget = 12;
+
+				if (music.getStatus() != sf::Sound::Status::Playing && gameTimer < 287) {
+					music.setBuffer(startupSound);
+					music.play();
+				}
+			}
+
+			if (gameTimer > 290 && gameTimer < 305) {
+				enemy[31]->spawn(Point(0, 0, 30));
+				gameTimer = 320;
+
+			}
+
+			if (gameTimer > 320 && gameTimer < 325) {
+				if (music.getStatus() != sf::Sound::Status::Playing) {
+					music.setBuffer(bossMusic);
+					music.play();
+				}
+
+				if (enemy[31]->alive) {
+					gameTimer = 321;
+				}
+				else {
+					gameTimer = 365;
+				}
+			}
+
+			if (gameTimer > 365 && gameTimer < 374) {
+				music.stop();
+				scrollSpeedtarget = 4;
+			}
+			if (gameTimer > 365 && gameTimer < 366) {
+				HealthUp[0]->spawn(Point(2, 0, 25));
+				HealthUp[1]->spawn(Point(-2, 0, 25));
+			}
+
+			if (gameTimer > 375 && gameTimer < 380) {
+				c->distortiony = -(1.0f - (gameTimer - 372.0f) / 8.0f);
+				scrollSpeedtarget = 12;
+
+				if (music.getStatus() != sf::Sound::Status::Playing && gameTimer < 376) {
+					music.setBuffer(startupSound);
+					music.play();
+				}
+			}
+			if (gameTimer > 380) {
+				enemySpawnRate *= .8;
+				gameTimer = 7;
+				maxBounceEnemies = 4;
+				//lives++;
+				enemySpawnCooldown = 8;
+			}
+
+
+//////
+/*
 			if (gameTimer > 255 && gameTimer < 260) {
 				enemy[31]->spawn(Point(0, 0, 30));
 				gameTimer = 265;
@@ -357,6 +457,7 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 				enemySpawnCooldown = 8;
 			}
 
+*/
 			
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || !window->hasFocus()) {
 				if (!pausebuttonDown) {
@@ -391,6 +492,28 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 						soundfx.setBuffer(deathSound);
 						soundfx.play();
 						score += enemy[j]->getPointValue();
+
+						if (!enemy[j]->alive) {
+
+							if (enemy[j]->spawnsShield()) {
+								for (int k = 0; k < MAX_POWERUPS; k++)
+								{
+									if (!ShieldUp[k]->alive) {
+										ShieldUp[k]->spawn(enemy[j]->position);
+										break;
+									}
+								}
+							}else if (enemy[j]->spawnsHealth()) {
+								for (int k = 0; k < MAX_POWERUPS; k++)
+								{
+									if (!HealthUp[k]->alive) {
+										HealthUp[k]->spawn(enemy[j]->position);
+										break;
+									}
+								}
+							}
+						}
+
 					}
 
 				}
@@ -401,13 +524,47 @@ void TestScene::update(float delta, sf::Window* window, Camera* c) {
 			enemy[i]->update(delta);
 			if (ship.isAlive()) {
 				if (enemy[i]->canHit(ship.position)) {
-					ship.startRespawn();
-					lives -= 1;
+					if (ship.hasShield) {
+						ship.hasShield = false;
+					} else {
+						ship.startRespawn();
+						lives -= 1;
+					}
 					soundfx.setBuffer(deathSound);
 					soundfx.play();
 					if (lives == 0) {
 						restartTimer = 5;
 					}
+				}
+			}
+		}
+
+		for (int i = 0; i < MAX_POWERUPS; i++)
+		{
+			HealthUp[i]->update(delta);
+			if (ship.isAlive()) {
+				if (HealthUp[i]->canHit(ship.position)) {
+					lives++;
+					HealthUp[i]->collectionTimer = 1;
+					score += HealthUp[i]->getPointValue();
+					soundfx.setBuffer(confirmSound);
+					soundfx.play();
+				}
+			}
+		}
+		for (int i = 0; i < MAX_POWERUPS; i++)
+		{
+			ShieldUp[i]->update(delta);
+			if (ship.isAlive()) {
+				if (ShieldUp[i]->canHit(ship.position)) {
+					if (!ship.hasShield) {
+						ship.hasShield = true;
+						ship.shieldSpawnTimer = 1;
+					}
+					ShieldUp[i]->collectionTimer = 1;
+					score += ShieldUp[i]->getPointValue();
+					soundfx.setBuffer(confirmSound);
+					soundfx.play();
 				}
 			}
 		}

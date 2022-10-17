@@ -144,7 +144,9 @@
     <ClCompile Include="PolyEnemy.cpp" />
     <ClCompile Include="PolyEnemyBouncer.cpp" />
     <ClCompile Include="PolyGrid.cpp" />
+    <ClCompile Include="PolyHealthUp.cpp" />
     <ClCompile Include="PolyMissile.cpp" />
+    <ClCompile Include="PolyShieldUp.cpp" />
     <ClCompile Include="PolyShip.cpp" />
     <ClCompile Include="testscene.cpp" />
   </ItemGroup>
@@ -159,7 +161,9 @@
     <ClInclude Include="PolyEnemy.h" />
     <ClInclude Include="PolyEnemyBouncer.h" />
     <ClInclude Include="PolyGrid.h" />
+    <ClInclude Include="PolyHealthUp.h" />
     <ClInclude Include="PolyMissile.h" />
+    <ClInclude Include="PolyShieldUp.h" />
     <ClInclude Include="PolyShip.h" />
     <ClInclude Include="testscene.h" />
   </ItemGroup>

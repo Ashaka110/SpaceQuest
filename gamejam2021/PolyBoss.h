@@ -11,6 +11,8 @@ class PolyBoss : public PolyEnemy
 		void update(float delta);
 
 		virtual int getPointValue();
+		virtual bool spawnsShield();
+		virtual bool spawnsHealth();
 
 		bool tryHit(Point pos);
 		bool canHit(Point pos);

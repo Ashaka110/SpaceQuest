@@ -15,6 +15,8 @@ class Point{
         static void Scale(Point p[], int arraySize, float s);
 		static void Translate(Point p[], int arraySize, Point translate);
 		static void RotateZ(Point p[], int arraySize, float angle);
+		static void RotateX(Point p[], int arraySize, float angle);
+		static void RotateY(Point p[], int arraySize, float angle);
 		static Point RotateAroundZ(Point p, Point center, float angle);
 
 };

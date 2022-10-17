@@ -52,13 +52,42 @@ void Point::RotateZ(Point p[], int arraySize, float angle)
 
 	for (int i = 0; i < arraySize; i++)
 	{
-		p[i] = Point(p[i].x * sina + p[i].y * cosa, 
-					 p[i].x * cosa - p[i].y * sina, 
+		p[i] = Point( p[i].x * cosa + p[i].y * sina, 
+					  -p[i].x * sina + p[i].y * cosa, 
 				     p[i].z);
 	}
 
 }
+void Point::RotateX(Point p[], int arraySize, float angle)
+{
+	float sina = sin(angle);
+	float cosa = cos(angle);
 
+	for (int i = 0; i < arraySize; i++)
+	{
+		p[i] = Point(
+				     p[i].x,
+					 p[i].z * sina + p[i].y * cosa, 
+					 p[i].z * cosa - p[i].y * sina
+		);
+	}
+
+}
+
+void Point::RotateY(Point p[], int arraySize, float angle)
+{
+	float sina = sin(angle);
+	float cosa = cos(angle);
+
+	for (int i = 0; i < arraySize; i++)
+	{
+		p[i] = Point(p[i].z * sina + p[i].x * cosa, 
+				     p[i].y,
+					 p[i].z * cosa - p[i].x * sina
+		);
+	}
+
+}
 Point Point::RotateAroundZ(Point p, Point center, float angle)
 {
 	float sina = sin(angle);
